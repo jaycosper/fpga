@@ -74,11 +74,4 @@ module gcd
 
     end
 
-    //always_comb @(*) begin
-    //    calc_complete <= 0;
-    //    if (a_int == 0 || b_int == 0) begin
-    //        calc_complete <= 1;
-    //    end
-    //end
-
 endmodule

@@ -92,7 +92,7 @@ module gcd_tb;
         i = 4;
         a <= 250;
         b <= 190;
-        ans <= 11;
+        ans <= 10;
         enable = 1;
         @(negedge clk);
         enable = 0;
@@ -106,6 +106,34 @@ module gcd_tb;
         i = 5;
         a <= 250;
         b <= 5;
+        ans <= 5;
+        enable = 1;
+        @(negedge clk);
+        enable = 0;
+
+        while (!valid) begin
+            @(negedge clk);
+        end
+        `assert(y, ans);
+
+        // testcase #6
+        i = 6;
+        a <= 19;
+        b <= 27;
+        ans <= 1;
+        enable = 1;
+        @(negedge clk);
+        enable = 0;
+
+        while (!valid) begin
+            @(negedge clk);
+        end
+        `assert(y, ans);
+
+        // testcase #7
+        i = 7;
+        a <= 25;
+        b <= 30;
         ans <= 5;
         enable = 1;
         @(negedge clk);
