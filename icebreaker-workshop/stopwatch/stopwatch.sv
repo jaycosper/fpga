@@ -35,10 +35,10 @@ module top (
     // edge detection
     logic BTN3_qq, BTN3_redge;
 
-    debounce u_deb_btn_n(.clk(CLK), .din(BTN_N), .dout(BTN_N_q));
-    debounce u_deb_btn1_n(.clk(CLK), .din(BTN1), .dout(BTN1_q));
-    debounce u_deb_btn2_n(.clk(CLK), .din(BTN2), .dout(BTN2_q));
-    debounce u_deb_btn3_n(.clk(CLK), .din(BTN3), .dout(BTN3_q));
+    debounce #(.STAGES(2)) u_deb_btn_n  (.clk(CLK), .din(BTN_N), .dout(BTN_N_q));
+    debounce #(.STAGES(2)) u_deb_btn1_n (.clk(CLK), .din(BTN1), .dout(BTN1_q));
+    debounce #(.STAGES(2)) u_deb_btn2_n (.clk(CLK), .din(BTN2), .dout(BTN2_q));
+    debounce #(.STAGES(2)) u_deb_btn3_n (.clk(CLK), .din(BTN3), .dout(BTN3_q));
 
     // Combinatorial logic
     assign LED1 = BTN1_q && BTN2_q;
