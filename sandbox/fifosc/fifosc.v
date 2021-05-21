@@ -1,6 +1,7 @@
 /**
  * single clock FIFO
  */
+ //! Single clock FIFO
 module fifosc
 #(
     parameter DATA_WIDTH = 4
@@ -15,9 +16,9 @@ module fifosc
     output full,                // FIFO full flag
     output [DATA_WIDTH-1:0] do  // dataout
 );
-    parameter FIFO_DEPTH = 7;
-    parameter k = 1;
-    parameter as = 3;
+    localparam  FIFO_DEPTH = 7;
+    localparam  k = 1;
+    localparam  as = 3;
 
     reg [DATA_WIDTH-1:0] fifo_mem [0:FIFO_DEPTH-1];
     reg [as-1:0] wrptr, wrptr_q;
@@ -28,7 +29,7 @@ module fifosc
     reg [DATA_WIDTH-1:0] do;
     reg full, empty;
 
-    always @(posedge clk) begin
+    always @(posedge clk) begin : fifo_process
         if (flush) begin
             full <= 0;
             empty <= 1;
@@ -37,51 +38,54 @@ module fifosc
             wrptr_q <= -2;
             rdptr <= -1;
             rdptr_q <= -2;
-        end
-        else begin
+        end else begin
             case({remove, insert})
-            2'b00: ;// nothing to do
-            2'b01:
-                // insert element
-                if (~full) begin
-                    // place datain into fifo_mem
-                    fifo_mem[wrptr] <= di;
-                    // clear empty flag
-                    empty <= 0;
-                    wrptr <= {(wrptr[k]^wrptr[0]), wrptr[as-1:1]};
-                    wrptr_q <= wrptr;
-                    // check for full
-                    if (wrptr == rdptr_q) begin
-                        full <= 1;
+                2'b00: ; // nothing to do
+                2'b01: begin
+                    // insert element
+                    if (~full) begin
+                        // place datain into fifo_mem
+                        fifo_mem[wrptr] <= di;
+                        // clear empty flag
+                        empty <= 0;
+                        wrptr <= {(wrptr[k]^wrptr[0]), wrptr[as-1:1]};
+                        wrptr_q <= wrptr;
+                        // check for full
+                        if (wrptr == rdptr_q) begin
+                            full <= 1;
+                        end
                     end
                 end
-            2'b10:
-                // remove element
-                if (~empty) begin
-                    // place datain into fifo_mem
-                    do <= fifo_mem[rdptr];
-                    // clear full flag
-                    full <= 0;
-                    rdptr_q <= rdptr;
-                    rdptr <= {(rdptr[k]^rdptr[0]), rdptr[as-1:1]};
-                    // check for empty
-                    if (rdptr == wrptr_q) begin
-                        empty <= 1;
+                2'b10: begin
+                    // remove element
+                    if (~empty) begin
+                        // place datain into fifo_mem
+                        do <= fifo_mem[rdptr];
+                        // clear full flag
+                        full <= 0;
+                        rdptr_q <= rdptr;
+                        rdptr <= {(rdptr[k]^rdptr[0]), rdptr[as-1:1]};
+                        // check for empty
+                        // FOR SOME REASON, THIS IF NEEDS TO BE COMMENTED OUT FOR DOCUMENTER TO WORKs
+                        if (rdptr == wrptr_q) begin
+                            empty <= 1;
+                        end
                     end
                 end
-            2'b11:
-                // insert and remove element
-                if (~full && ~empty) begin
-                    // place datain into fifo_mem
-                    fifo_mem[wrptr] <= di;
-                    // place datain into fifo_mem
-                    do <= fifo_mem[rdptr];
-                    // update ptrs
-                    wrptr_q <= wrptr;
-                    rdptr_q <= rdptr;
-                    rdptr <= {(rdptr[k]^rdptr[0]), rdptr[as-1:1]};
-                    wrptr <= {(wrptr[k]^wrptr[0]), wrptr[as-1:1]};
-                    // full/empty flags unaffected (remain the same)
+                2'b11: begin
+                    // insert and remove element
+                    if (~full && ~empty) begin
+                        // full/empty flags unaffected (remain the same)
+                        // place datain into fifo_mem
+                        fifo_mem[wrptr] <= di;
+                        // place datain into fifo_mem
+                        do <= fifo_mem[rdptr];
+                        // update ptrs
+                        wrptr_q <= wrptr;
+                        rdptr_q <= rdptr;
+                        rdptr <= {(rdptr[k]^rdptr[0]), rdptr[as-1:1]};
+                        wrptr <= {(wrptr[k]^wrptr[0]), wrptr[as-1:1]};
+                    end
                 end
             endcase
         end

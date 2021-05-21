@@ -9,7 +9,7 @@ module debounce #(
 );
     reg [STAGES-1:0] pipe;
 
-    always@(posedge clk or negedge rst_n) begin
+    always@(posedge clk or negedge rst_n) begin : pipe_gen
         if (!rst_n) begin
             pipe <= 0;
             dout <= 1'b0;

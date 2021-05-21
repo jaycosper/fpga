@@ -7,7 +7,7 @@ module top (
     input  CLK,
     input  BTN_N, BTN1, BTN2, BTN3,
     output LED1, LED2, LED3, LED4, LED5,
-    output P1A1, P1A2, P1A3, P1A4, P1A7, P1A8, P1A9, P1A10,
+    output P1A1, P1A2, P1A3, P1A4, P1A7, P1A8, P1A9, P1A10
 );
     // 7 segment control line bus
     wire [7:0] seven_segment;
@@ -35,10 +35,11 @@ module top (
     // edge detection
     logic BTN3_qq, BTN3_redge;
 
-    debounce #(.STAGES(2)) u_deb_btn_n  (.clk(CLK), .din(BTN_N), .dout(BTN_N_q));
-    debounce #(.STAGES(2)) u_deb_btn1_n (.clk(CLK), .din(BTN1), .dout(BTN1_q));
-    debounce #(.STAGES(2)) u_deb_btn2_n (.clk(CLK), .din(BTN2), .dout(BTN2_q));
-    debounce #(.STAGES(2)) u_deb_btn3_n (.clk(CLK), .din(BTN3), .dout(BTN3_q));
+    //! deboucing array
+    debounce #(.STAGES(2)) u_deb_btn_n  (.clk(CLK), .din(BTN_N), .dout(BTN_N_q) );
+    debounce #(.STAGES(2)) u_deb_btn1_n (.clk(CLK), .din(BTN1),  .dout(BTN1_q)  );
+    debounce #(.STAGES(2)) u_deb_btn2_n (.clk(CLK), .din(BTN2),  .dout(BTN2_q)  );
+    debounce #(.STAGES(2)) u_deb_btn3_n (.clk(CLK), .din(BTN3),  .dout(BTN3_q)  );
 
     // Combinatorial logic
     assign LED1 = BTN1_q && BTN2_q;
@@ -96,14 +97,14 @@ module top (
 
     assign display_out = (lap_timeout) ? lap_value : display_value;
 
-    //assign display_value_inc = display_value + 8'b1;
-    bcd8_increment u_bcd8_increment(
+    //! BCD incrementer
+    bcd8_increment u_bcd8_increment (
         .din(display_value),
         .dout(display_value_inc)
     );
 
-    // 7 segment di;splay control Pmod 1A
-    seven_seg_ctrl seven_segment_ctrl (
+    //! 7 segment display control Pmod 1A
+    seven_seg_ctrl u_seven_segment_ctrl (
         .CLK(CLK),
         .blank(lap_timeout[2]),
         .din(display_out),
@@ -112,13 +113,14 @@ module top (
 
 endmodule
 
-// Debouncer
+//! Debouncer
+//! This is some code
 module debounce #(
-    parameter STAGES = 3
+    parameter STAGES = 3 //! number of debounce stages
 )(
-    input logic clk,
-    input logic din,
-    output logic dout
+    input logic clk,    //! clock input
+    input logic din,    //! data input
+    output logic dout   //! debouced output
 );
     logic [STAGES-1:0] pipe;
 
