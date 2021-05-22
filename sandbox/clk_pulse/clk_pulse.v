@@ -1,9 +1,6 @@
 // Clock pulse and edge detection generator
 // Clock pulse if rounded to nearest log2 value
-module clk_pulse #(
-    //! Number of clock cycles per pulse
-    parameter integer PULSE_CYCLE_COUNT = 1000
-)(
+module clk_pulse (
     input wire clk,         //! input clock
     input wire rst_n,       //! active-low asynchronous reset
     input wire data,        //! data for edge detection
@@ -11,7 +8,8 @@ module clk_pulse #(
     output reg data_redge,  //! rising-edge detection pulse of data
     output reg data_fedge   //! falling-edge detection pulse of data
 );
-
+    //! Number of clock cycles per pulse
+    parameter integer PULSE_CYCLE_COUNT = 1000;
     //! Calculate the size of the counter
     localparam PULSE_CNTR_WIDTH = $clog2(PULSE_CYCLE_COUNT);
 
