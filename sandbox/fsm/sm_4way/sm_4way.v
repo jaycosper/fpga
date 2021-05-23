@@ -31,8 +31,6 @@ module sm_sep_cs_ns_ol(
 
     //! Next state process
     always@(*) begin
-        // default case
-        nextState = ST0;
         case(currState)
             ST0: begin nextState = ST1; end
             ST1: begin
@@ -44,18 +42,19 @@ module sm_sep_cs_ns_ol(
             end
             ST2: begin nextState = ST3; end
             ST3: begin nextState = ST0; end
+            default: begin nextState = ST0; end
         endcase
     end
 
     //! Output logic process
     always@(*) begin
-        y = 0;
         // set output and state at the same time for the next clock
         case(currState)
             ST0: begin y = 0; end
             ST1: begin y = 1; end
             ST2: begin y = 2; end
             ST3: begin y = 3; end
+            default: begin y = 0; end
         endcase
     end
 endmodule
@@ -99,13 +98,12 @@ module sm_comb_cs_ns_sep_ol(
 
     //! Output logic process
     always@(*) begin
-        y = 0;
         case(currState)
             ST0: begin y = 0; end
             ST1: begin y = 1; end
             ST2: begin y = 2; end
             ST3: begin y = 3; end
-            // missing default -> error handler case
+            default: begin y = 0; end
         endcase
     end
 
@@ -139,8 +137,6 @@ module sm_comb_ns_ol_sep_cs(
     //! Output logic process
     always@(*) begin
         // defaults
-        nextState = ST0;
-        y = 0;
         case(currState)
             // since comb, OL is based on current state
             ST0: begin nextState = ST1; y = 0; end
@@ -154,7 +150,7 @@ module sm_comb_ns_ol_sep_cs(
             end
             ST2: begin nextState = ST3; y = 2; end
             ST3: begin nextState = ST0; y = 3; end
-            // missing default -> error handler case
+            default: begin nextState = ST0; y = 0; end
         endcase
     end
 
