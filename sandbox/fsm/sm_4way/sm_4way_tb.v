@@ -17,6 +17,7 @@ module sm_4way_tb;
 
     // generic integer using in FOR loops
     integer i;
+    reg allow_checks = 0;
 
     // input signals
     reg reset;
@@ -70,8 +71,8 @@ module sm_4way_tb;
         control <= 0;
 
         // monitor signals of concern
-        $display("time\treset\tcontrol\ty0\ty1\ty2\ty3");
-        $monitor("%4g\t%b\t%b\t%d\t%d\t%d\t%d", $time, reset, control, y0, y1, y2, y3);
+        $display("time\tallow_checks\treset\tcontrol\ty0\ty1\ty2\ty3");
+        $monitor("%4g\t%b\t\t%b\t%b\t%d\t%d\t%d\t%d", $time, allow_checks, reset, control, y0, y1, y2, y3);
 
         // reset device
         @(negedge clk);
@@ -79,6 +80,7 @@ module sm_4way_tb;
         @(negedge clk);
             reset <= 0;
 
+        allow_checks <= 1'b1;
         // intro clocks
         for(i=0; i<4;i=i+1) begin
             @(negedge clk);
@@ -100,8 +102,10 @@ module sm_4way_tb;
     end
 
     always @(negedge clk) begin
-        `assert(y0, y1);
-        `assert(y1, y2);
-        `assert(y2, y3);
+        if (allow_checks) begin
+            `assert(y0, y1);
+            `assert(y1, y2);
+            `assert(y2, y3);
+        end
     end
 endmodule

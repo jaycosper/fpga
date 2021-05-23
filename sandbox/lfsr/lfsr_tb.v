@@ -9,7 +9,7 @@
 module lfsr_tb;
 
     // width of data
-    localparam LFSR_WIDTH_TB = 8;
+    localparam integer LFSR_WIDTH_TB = 8;
 
     // clock period (1ns * 10 = 10ns; 100MHz)
     localparam clock_period = 10;
@@ -51,7 +51,6 @@ module lfsr_tb;
                                     // and all modules under it
 
         // initial state of inputs
-        //taps <= (LFSR_WIDTH_TB)'b10001110;
         taps <= 8'b10001110;
         rst_n <= 1;
         enable <= 0;

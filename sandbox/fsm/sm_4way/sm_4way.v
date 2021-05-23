@@ -31,18 +31,19 @@ module sm_sep_cs_ns_ol(
 
     //! Next state process
     always@(*) begin
+        // default case
+        nextState = ST0;
         case(currState)
-            ST0: begin nextState <= ST1; end
+            ST0: begin nextState = ST1; end
             ST1: begin
                 if(control) begin
-                    nextState <= ST3;
+                    nextState = ST3;
                 end else begin
-                    nextState <= ST2;
+                    nextState = ST2;
                 end
             end
-            ST2: begin nextState <= ST3; end
-            ST3: begin nextState <= ST0; end
-            // missing default -> error handler case
+            ST2: begin nextState = ST3; end
+            ST3: begin nextState = ST0; end
         endcase
     end
 
@@ -137,6 +138,9 @@ module sm_comb_ns_ol_sep_cs(
     //! Next state process
     //! Output logic process
     always@(*) begin
+        // defaults
+        nextState = ST0;
+        y = 0;
         case(currState)
             // since comb, OL is based on current state
             ST0: begin nextState = ST1; y = 0; end
