@@ -26,9 +26,10 @@ module rr_arbiter(
     output reg [DATA_WIDTH-1:0] rddataC,
     input wire rdWrnC,
     // RAM port
-    input wire [ADDR_WIDTH-1:0] address,
-    input wire [DATA_WIDTH-1:0] wrdata,
-    output reg [DATA_WIDTH-1:0] rddata
+    output wire [ADDR_WIDTH-1:0] address,
+    output wire [DATA_WIDTH-1:0] wrdata,
+    input wire [DATA_WIDTH-1:0] rddata,
+    output wire rdWrn
 );
     parameter ADDR_WIDTH = 12;
     parameter DATA_WIDTH = 8;
@@ -130,6 +131,25 @@ module rr_arbiter(
                 end
             end
         endcase
+    end
+
+    assign address = (ackA) ? addressA : 12'bz;
+    assign address = (ackB) ? addressB : 12'bz;
+    assign address = (ackC) ? addressC : 12'bz;
+    assign wrdata = (ackA) ? wrdataA : 8'bz;
+    assign wrdata = (ackB) ? wrdataB : 8'bz;
+    assign wrdata = (ackC) ? wrdataC : 8'bz;
+    assign rdWrn = (ackA) ? rdWrnA : 1'bz;
+    assign rdWrn = (ackB) ? rdWrnB : 1'bz;
+    assign rdWrn = (ackC) ? rdWrnC : 1'bz;
+
+    always @(*) begin
+        rddataA = 8'bz;
+        rddataB = 8'bz;
+        rddataC = 8'bz;
+        if (ackA) rddataA = rddata;
+        if (ackB) rddataB = rddata;
+        if (ackC) rddataC = rddata;
     end
 
     // watchdog timer

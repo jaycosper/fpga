@@ -9,7 +9,7 @@
 module rr_arbiter_tb;
     localparam ADDR_WIDTH_TB = 12;
     localparam DATA_WIDTH_TB = 8;
-    localparam WD_TIMER_WIDTH_TB = 6;
+    localparam WD_TIMER_WIDTH_TB = 3;
 
     // clock period (1ns * 10 = 10ns; 100MHz)
     localparam clock_period = 10;
@@ -48,9 +48,10 @@ module rr_arbiter_tb;
     wire [DATA_WIDTH_TB-1:0] rddataC;
     reg rdWrnC;
 
-    reg [ADDR_WIDTH_TB-1:0] address;
-    reg [DATA_WIDTH_TB-1:0] wrdata;
-    wire [DATA_WIDTH_TB-1:0] rddata;
+    wire [ADDR_WIDTH_TB-1:0] address;
+    wire [DATA_WIDTH_TB-1:0] wrdata;
+    reg [DATA_WIDTH_TB-1:0] rddata;
+    wire rdWrn;
 
     // instances under test
     rr_arbiter
@@ -82,7 +83,8 @@ module rr_arbiter_tb;
         .rdWrnC     ( rdWrnC   ),
         .address    ( address  ),
         .wrdata     ( wrdata   ),
-        .rddata     ( rddata   )
+        .rddata     ( rddata   ),
+        .rdWrn      ( rdWrn    )
     );
 
     // start of test process
@@ -97,6 +99,18 @@ module rr_arbiter_tb;
         reqA <= 0;
         reqB <= 0;
         reqC <= 0;
+
+        addressA <= 'h123;
+        wrdataA <= 'hAA;
+        rdWrnA <= 'b1;
+        addressB <= 'h456;
+        wrdataB <= 'hBB;
+        rdWrnB <= 1'b0;
+        addressC <= 'h789;
+        wrdataC <= 'hCC;
+        rdWrnC <= 1'b1;
+
+        rddata <= 'h77;
 
         // monitor signals of concern
         $display("time\treqA\tackA\treqB\tackB\treqC\tackC");
@@ -123,6 +137,32 @@ module rr_arbiter_tb;
         end
 
         reqA <= 0;
+
+        for(i=0; i<4;i=i+1) begin
+            @(negedge clk);
+        end
+
+        reqA <= 1;
+        reqB <= 1;
+        reqC <= 1;
+            while(!ackA) begin @(negedge clk); end
+            for(i=0; i<4;i=i+1) begin
+                @(negedge clk);
+            end
+            reqA <= 0;
+            while(!ackB) begin @(negedge clk); end
+            for(i=0; i<8;i=i+1) begin
+                @(negedge clk);
+            end
+            reqB <= 0;
+            while(!ackC) begin @(negedge clk); end
+            for(i=0; i<16;i=i+1) begin
+                @(negedge clk);
+            end
+            reqC <= 0;
+            reqB <= 1;
+            while(!ackB) begin @(negedge clk); end
+            reqB <= 0;
 
         for(i=0; i<4;i=i+1) begin
             @(negedge clk);
