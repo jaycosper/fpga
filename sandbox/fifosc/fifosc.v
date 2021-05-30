@@ -16,9 +16,9 @@ module fifosc
     output full,                // FIFO full flag
     output [DATA_WIDTH-1:0] do  // dataout
 );
-    localparam  FIFO_DEPTH = 7;
+    localparam  FIFO_DEPTH = 8;
     localparam  k = 1;
-    localparam  as = 3;
+    localparam  as = $clog2(FIFO_DEPTH-1);
 
     reg [DATA_WIDTH-1:0] fifo_mem [0:FIFO_DEPTH-1];
     reg [as-1:0] wrptr, wrptr_q;
@@ -28,7 +28,6 @@ module fifosc
     wire [DATA_WIDTH-1:0] di;
     reg [DATA_WIDTH-1:0] do;
     reg full, empty;
-
     always @(posedge clk) begin : fifo_process
         if (flush) begin
             full <= 0;
@@ -38,6 +37,7 @@ module fifosc
             wrptr_q <= -2;
             rdptr <= -1;
             rdptr_q <= -2;
+            do <= 0;
         end else begin
             case({remove, insert})
                 2'b00: ; // nothing to do
@@ -74,8 +74,12 @@ module fifosc
                 end
                 2'b11: begin
                     // insert and remove element
-                    if (~full && ~empty) begin
-                        // full/empty flags unaffected (remain the same)
+                    // full/empty flags unaffected (remain the same)
+                    // current state of full flags don't matter either
+                    // but empty flag does -- need to pass data straight through
+                    if (empty) begin
+                        do <= di;
+                    end else begin
                         // place datain into fifo_mem
                         fifo_mem[wrptr] <= di;
                         // place datain into fifo_mem
