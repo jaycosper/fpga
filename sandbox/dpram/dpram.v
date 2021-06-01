@@ -20,7 +20,7 @@ module dpram
     reg [DATA_WIDTH-1:0] rddata;
 
     // Declare the RAM variable
-    reg [DATA_WIDTH:0] dpram_array [0:RAM_SIZE-1];
+    reg [DATA_WIDTH-1:0] dpram_array [0:RAM_SIZE-1];
 
     // Write port
     always @ (posedge wrclk)
