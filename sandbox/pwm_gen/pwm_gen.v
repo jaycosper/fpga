@@ -29,8 +29,11 @@ module pwm_gen
     reg [WB_DATA_WIDTH-1:0] o_wb_rddata;
     wire o_pwm_out;
 
+    wire sysrst;
+    assign sysrst = i_rst | !i_rst_n;
+
     always @(posedge i_clk) begin : WB_HANDLER // Data write
-        if (i_rst) begin
+        if (sysrst) begin
             r_reload_value <= {PWM_WIDTH{1'b1}};
             o_wb_ack <= 1'b0;
             o_wb_rddata <= 0;
@@ -46,7 +49,7 @@ module pwm_gen
 
     reg [PWM_RATE_WIDTH-1:0] r_pulse_rate;
     always @(posedge i_clk) begin : MULTI_RATE
-        if (i_rst) begin
+        if (sysrst) begin
             r_pulse_rate <= 0;
         end else begin
             r_pulse_rate <= r_pulse_rate + 1'b1;
@@ -56,7 +59,7 @@ module pwm_gen
     reg [PWM_WIDTH-1:0] r_pwm_cntr;
     reg [PWM_WIDTH-1:0] r_pwm_setpoint;
     always @(posedge i_clk) begin : PWM_GEN
-        if (i_rst) begin
+        if (sysrst) begin
             r_pwm_cntr <= 0;
             r_pwm_setpoint <= {PWM_WIDTH{1'b1}}>>1; // 50%
         end else begin

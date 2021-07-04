@@ -16,6 +16,7 @@ module pwm_gen_tb;
     always #5 clk = !clk;
 
     reg rst;
+    reg rst_n;
 
     reg wb_stb;
     reg wb_we;
@@ -34,7 +35,7 @@ module pwm_gen_tb;
     ) u_pwm_gen (
         .i_clk          ( clk           ),
         .i_rst          ( rst           ),
-        .i_rst_n        ( 1'b1          ),
+        .i_rst_n        ( rst_n         ),
         .i_wb_stb       ( wb_stb        ),
         .i_wb_we        ( wb_we         ),
         .i_wb_addr      ( wb_addr       ),
@@ -66,10 +67,12 @@ module pwm_gen_tb;
         wb_addr <= 0;
         wb_wrdata <= 0;
         pwm_setpoint <= {TB_PWM_WIDTH{1'b1}}>>1; // 50%
+        rst_n = 0;
 
         @(negedge clk);
         @(negedge clk);
         rst = 1;
+        rst_n = 1;
         @(negedge clk);
         rst = 0;
 
