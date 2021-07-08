@@ -1,3 +1,11 @@
-# Verilog outputs
+# Verilog simulation outputs
 *.vvp
 *.vcd
+# Verilator build directory
+obj_dir/
+# Yosys build files
+*.asc
+*.bin
+*.nplog
+*.rpt
+*.yslog
