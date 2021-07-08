@@ -1,5 +1,9 @@
 /**
- * Sine wave generator
+ * Traditional PWM generator
+ * PWM rate = i_clk / reload_value / 2^PWM_RATE_WIDTH
+ * on reset, reload_value = 2^PWM_WIDTH
+ * i.e. i_clk = 12MHz, PWM_RATE_WIDTH = 4, PWM_WIDTH = 8
+ * PWM frequency = 12MHz / 2^8 / 2^4 = 2.93kHz
 **/
 
 module pwm_gen
