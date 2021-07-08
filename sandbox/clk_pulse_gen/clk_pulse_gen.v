@@ -1,6 +1,6 @@
 // Clock pulse and edge detection generator
 // Clock pulse if rounded to nearest log2 value
-module clk_pulse (
+module clk_pulse_gen (
     input wire clk,         //! input clock
     input wire rst_n,       //! active-low asynchronous reset
     input wire data,        //! data for edge detection
@@ -45,9 +45,9 @@ module clk_pulse (
     //! Combinatorial edge-detection outputs
     always@(*) begin : edge_detect_gate
         // Rising edge detect
-        data_redge <= (data_q == 1'b1 && data_qq == 1'b0) ? 1'b1 : 1'b0;
+        data_redge = (data_q == 1'b1 && data_qq == 1'b0) ? 1'b1 : 1'b0;
         // Falling edge detect
-        data_fedge <= (data_q == 1'b0 && data_qq == 1'b1) ? 1'b1 : 1'b0;
+        data_fedge = (data_q == 1'b0 && data_qq == 1'b1) ? 1'b1 : 1'b0;
     end
 
 endmodule

@@ -1,6 +1,6 @@
-TOP = clk_pulse_tb
-SRC = clk_pulse.v
-TEST_SRC= clk_pulse_tb.v
+TOP = clk_pulse_gen_tb
+SRC = clk_pulse_gen.v
+TEST_SRC= clk_pulse_gen_tb.v
 BIN = $(TOP).vvp
 WAVEFILE = wave.vcd
 

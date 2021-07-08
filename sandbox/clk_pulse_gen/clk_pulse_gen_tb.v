@@ -6,7 +6,7 @@
             $finish; \
         end
 
-module clk_pulse_tb;
+module clk_pulse_gen_tb;
 
     // number of debouncing stages (DFFs)
     localparam PULSE_CYCLE_COUNT_TB = 4;
@@ -37,9 +37,9 @@ module clk_pulse_tb;
     // generate multiple debounce instances
     generate
         for(inst=0; inst<CLK_PULSE_INST; inst=inst+1)
-            clk_pulse #(
+            clk_pulse_gen #(
                 .PULSE_CYCLE_COUNT(PULSE_CYCLE_COUNT_TB)
-            ) u_clk_pulse (
+            ) u_clk_pulse_gen (
                 .clk(clk),
                 .rst_n(rst_n),
                 .data(data),
@@ -53,7 +53,7 @@ module clk_pulse_tb;
     initial begin
         // save file, and specify what to save
         $dumpfile("wave.vcd");      // create a VCD waveform dump called "wave.vcd"
-        $dumpvars(0, clk_pulse_tb);  // dump variable changes in the testbench
+        $dumpvars(0, clk_pulse_gen_tb);  // dump variable changes in the testbench
                                     // and all modules under it
 
         // initial state of inputs
