@@ -8,8 +8,8 @@
 
 module clk_pulse_gen_tb;
 
-    // number of debouncing stages (DFFs)
-    localparam PULSE_CYCLE_COUNT_TB = 4;
+    // width of clk pulse counter
+    localparam PULSE_CNTR_WIDTH_TB = 4;
     // number of debounce instances for test
     localparam CLK_PULSE_INST = 1;
 
@@ -26,6 +26,7 @@ module clk_pulse_gen_tb;
     // input signals
     reg rst_n;
     reg data;
+    reg [PULSE_CNTR_WIDTH_TB-1:0] pulse_tc;
 
     // joined output signal
     wire [CLK_PULSE_INST-1:0] clk_pulse;
@@ -38,14 +39,15 @@ module clk_pulse_gen_tb;
     generate
         for(inst=0; inst<CLK_PULSE_INST; inst=inst+1)
             clk_pulse_gen #(
-                .PULSE_CYCLE_COUNT(PULSE_CYCLE_COUNT_TB)
+                .PULSE_CNTR_WIDTH(PULSE_CNTR_WIDTH_TB)
             ) u_clk_pulse_gen (
-                .clk(clk),
-                .rst_n(rst_n),
-                .data(data),
-                .clk_pulse(clk_pulse),
-                .data_redge(data_redge),
-                .data_fedge(data_fedge)
+                .i_clk(clk),
+                .i_rst_n(rst_n),
+                .i_data(data),
+                .i_pulse_tc(pulse_tc),
+                .o_clk_pulse(clk_pulse),
+                .o_data_redge(data_redge),
+                .o_data_fedge(data_fedge)
             );
     endgenerate
 
@@ -57,6 +59,7 @@ module clk_pulse_gen_tb;
                                     // and all modules under it
 
         // initial state of inputs
+        pulse_tc <= 'h3;
         data <= 0;
         rst_n <= 1;
 

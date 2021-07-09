@@ -6,10 +6,12 @@ SRC = ../$(PROJECT).v
 TEST_SRC= sim_$(PROJECT).cpp
 OUTPUT_DIR = obj_dir
 EXE = V$(PROJECT)
-#WAVEFILE = wave.vcd
+
+GFLAGS = -S ${FPGA_PROJDIR}/tools/gtkwave/gtkwave.tcl
+WAVEFILE = $(PROJECT)_trace.vcd
 
 CC = verilator
-FLAGS = -Wall -cc
+FLAGS = -Wall -cc --trace
 
 .PHONY: all clean lint sim test wave
 
@@ -25,8 +27,8 @@ sim:
 test: sim
 	./$(OUTPUT_DIR)/$(EXE)
 
-#wave: test
-#	gtkwave $(WAVEFILE)
+wave:
+	gtkwave $(GFLAGS) ./$(WAVEFILE)
 
 clean:
-	rm -rf obj_dir
+	rm -rf obj_dir *.vcd
