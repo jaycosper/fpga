@@ -13,9 +13,24 @@ public:
         m_core->i_pulse_tc = tc;
     }
 
+    // set the data input
+    virtual void    setData(uint32_t data) {
+        m_core->i_data = data;
+    }
+
     // get the o_clk_pulse output
     virtual bool    getClkPulseOuput(void) {
         return m_core->o_clk_pulse;
+    }
+
+    // get the o_data_redge output
+    virtual bool    getDataRedgeOuput(void) {
+        return m_core->o_data_redge;
+    }
+
+    // get the o_data_fedge output
+    virtual bool    getDataFedgeOuput(void) {
+        return m_core->o_data_fedge;
     }
 
     virtual void reset(void) {

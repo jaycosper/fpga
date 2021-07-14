@@ -30,10 +30,10 @@ int main(int argc, char **argv) {
     // end
     // `assert(data_redge, 1'b1);
     // `assert(data_fedge, 1'b0)
-    tb->m_core->i_data = 1;
-    while(tb->m_core->o_data_redge == 0) tb->tick();
-    assert(tb->m_core->o_data_redge == 1);
-    assert(tb->m_core->o_data_fedge == 0);
+    tb->setData(1);
+    while(!tb->getDataRedgeOuput()) tb->tick();
+    assert(tb->getDataRedgeOuput());
+    assert(!tb->getDataFedgeOuput());
     // @(negedge clk);
     // @(negedge clk);
     // @(negedge clk);
@@ -49,10 +49,10 @@ int main(int argc, char **argv) {
     tb->tick();
     tb->tick();
     tb->tick();
-    tb->m_core->i_data = 0;
-    while(tb->m_core->o_data_fedge == 0) tb->tick();
-    assert(tb->m_core->o_data_redge == 0);
-    assert(tb->m_core->o_data_fedge == 1);
+    tb->setData(0);
+    while(!tb->getDataFedgeOuput()) tb->tick();
+    assert(!tb->getDataRedgeOuput());
+    assert(tb->getDataFedgeOuput());
 
     // Tick the clock until we are done
     while(!tb->done())
