@@ -18,7 +18,7 @@ FLAGS = -Wall -cc --trace
 all: test
 
 lint:
-	$(CC) $(FLAGS) $(SRC)
+	$(CC) $(FLAGS) --lint-only $(SRC)
 
 sim:
 	$(CC) $(FLAGS) -exe $(TEST_SRC) $(SRC)
