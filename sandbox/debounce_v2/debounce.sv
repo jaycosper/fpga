@@ -32,22 +32,20 @@ module debounce #(
         max_cntr  = &cntr; // terminal count
     end
 
-    // counter
-    logic dout_q; // delayed data output
+    // counter and onlow/onhigh event pulses
     always_ff @(posedge i_clk or posedge reset) begin: cntr_flop
-        dout_q <= o_dout;
+        o_onlow <= 1'b0;
+        o_onhigh <= 1'b0;
         if (idle_signal || reset) begin
             cntr <= 0;
         end else begin
             cntr <= cntr + 1;
-            if (max_cntr) o_dout <= ~o_dout; // why not &pipe? or pipe[SYNC_STAGES-1]?
+            if (max_cntr) begin
+                o_dout <= ~o_dout; // why not &pipe? or pipe[SYNC_STAGES-1]?
+                o_onlow <= o_dout;
+                o_onhigh <= ~o_dout;
+            end
         end
-    end
-
-    // onlow/onhigh pulses
-    always_comb begin: event_pulses
-        o_onlow = ~o_dout && dout_q;
-        o_onhigh = o_dout && ~dout_q;
     end
 
 endmodule
