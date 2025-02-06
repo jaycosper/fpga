@@ -3,6 +3,7 @@
 *.vcd
 # Verilator build directory
 obj_dir/
+_build/
 # Yosys build files
 *.asc
 *.bin
