@@ -1,17 +1,17 @@
 # Verilator makefile
 
-PROJECT = debounce
+PROJECT = capture_sync
 #TOP = test_our
 SRC = ../$(PROJECT).sv
 TEST_SRC= sim_$(PROJECT).cpp
-OUTPUT_DIR = _build
+OUTPUT_DIR = obj_dir
 EXE = V$(PROJECT)
 
 GFLAGS = -S ${FPGA_PROJDIR}/tools/gtkwave/gtkwave.tcl
 WAVEFILE = $(PROJECT)_trace.vcd
 
 CC = verilator
-FLAGS = -Wall -cc --trace -Mdir $(OUTPUT_DIR)
+FLAGS = -Wall -cc --trace
 
 PARAMS = -GSYNC_STAGES=3 -GCLK_CYCLES_L2=4
 

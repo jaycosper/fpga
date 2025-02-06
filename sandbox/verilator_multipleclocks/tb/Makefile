@@ -1,6 +1,6 @@
 # Verilator makefile
 
-PROJECT = debounce
+PROJECT = top
 #TOP = test_our
 SRC = ../$(PROJECT).sv
 TEST_SRC= sim_$(PROJECT).cpp
@@ -13,7 +13,8 @@ WAVEFILE = $(PROJECT)_trace.vcd
 CC = verilator
 FLAGS = -Wall -cc --trace -Mdir $(OUTPUT_DIR)
 
-PARAMS = -GSYNC_STAGES=3 -GCLK_CYCLES_L2=4
+#PARAMS = -GSYNC_STAGES=3 -GCLK_CYCLES_L2=4
+PARAMS =
 
 .PHONY: all clean lint sim test wave
 
