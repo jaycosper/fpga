@@ -1,10 +1,10 @@
 {
-  "creator": "Yosys 0.9+4052 (open-tool-forge build) (git sha1 d061b0e4, gcc 9.3.0-17ubuntu1~20.04 -Os)",
+  "creator": "Yosys 0.9 (git sha1 1979e0b)",
   "modules": {
-    "blocking_vs_nonblocking": {
+    "blocking_vs_nonblocking_forloop": {
       "attributes": {
-        "top": "00000000000000000000000000000001",
-        "src": "blocking_vs_nonblocking.v:3.1-42.10"
+        "top": 1,
+        "src": "blocking_vs_nonblocking_forloop.v:2"
       },
       "ports": {
         "clk": {
@@ -15,262 +15,33 @@
           "direction": "input",
           "bits": [ 3 ]
         },
-        "a1": {
+        "data": {
           "direction": "input",
-          "bits": [ 4, 5, 6 ]
+          "bits": [ 4 ]
         },
-        "y1": {
+        "yA_up": {
           "direction": "output",
-          "bits": [ 7 ]
+          "bits": [ 5, 6, 6, 6 ]
         },
-        "a2": {
-          "direction": "input",
-          "bits": [ 8, 9, 10 ]
-        },
-        "y2": {
+        "yA_down": {
           "direction": "output",
-          "bits": [ 11 ]
+          "bits": [ 7, 8, 9, 10 ]
         },
-        "a3": {
-          "direction": "input",
-          "bits": [ 12, 13, 14 ]
-        },
-        "y3": {
+        "yB": {
           "direction": "output",
-          "bits": [ 15 ]
-        },
-        "a4": {
-          "direction": "input",
-          "bits": [ 16, 17, 18 ]
-        },
-        "y4": {
-          "direction": "output",
-          "bits": [ 19 ]
+          "bits": [ 11, 12, 13, 14 ]
         }
       },
       "cells": {
-        "$and$blocking_vs_nonblocking.v:20$2": {
-          "hide_name": 1,
-          "type": "$and",
-          "parameters": {
-            "A_SIGNED": "00000000000000000000000000000000",
-            "A_WIDTH": "00000000000000000000000000000001",
-            "B_SIGNED": "00000000000000000000000000000000",
-            "B_WIDTH": "00000000000000000000000000000001",
-            "Y_WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:20.14-20.27"
-          },
-          "port_directions": {
-            "A": "input",
-            "B": "input",
-            "Y": "output"
-          },
-          "connections": {
-            "A": [ 4 ],
-            "B": [ 5 ],
-            "Y": [ 20 ]
-          }
-        },
-        "$and$blocking_vs_nonblocking.v:26$5": {
-          "hide_name": 1,
-          "type": "$and",
-          "parameters": {
-            "A_SIGNED": "00000000000000000000000000000000",
-            "A_WIDTH": "00000000000000000000000000000001",
-            "B_SIGNED": "00000000000000000000000000000000",
-            "B_WIDTH": "00000000000000000000000000000001",
-            "Y_WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:26.15-26.28"
-          },
-          "port_directions": {
-            "A": "input",
-            "B": "input",
-            "Y": "output"
-          },
-          "connections": {
-            "A": [ 8 ],
-            "B": [ 9 ],
-            "Y": [ 21 ]
-          }
-        },
-        "$and$blocking_vs_nonblocking.v:32$8": {
-          "hide_name": 1,
-          "type": "$and",
-          "parameters": {
-            "A_SIGNED": "00000000000000000000000000000000",
-            "A_WIDTH": "00000000000000000000000000000001",
-            "B_SIGNED": "00000000000000000000000000000000",
-            "B_WIDTH": "00000000000000000000000000000001",
-            "Y_WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:32.14-32.27"
-          },
-          "port_directions": {
-            "A": "input",
-            "B": "input",
-            "Y": "output"
-          },
-          "connections": {
-            "A": [ 12 ],
-            "B": [ 13 ],
-            "Y": [ 22 ]
-          }
-        },
-        "$and$blocking_vs_nonblocking.v:38$11": {
-          "hide_name": 1,
-          "type": "$and",
-          "parameters": {
-            "A_SIGNED": "00000000000000000000000000000000",
-            "A_WIDTH": "00000000000000000000000000000001",
-            "B_SIGNED": "00000000000000000000000000000000",
-            "B_WIDTH": "00000000000000000000000000000001",
-            "Y_WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:38.15-38.28"
-          },
-          "port_directions": {
-            "A": "input",
-            "B": "input",
-            "Y": "output"
-          },
-          "connections": {
-            "A": [ 16 ],
-            "B": [ 17 ],
-            "Y": [ 23 ]
-          }
-        },
-        "$or$blocking_vs_nonblocking.v:21$3": {
-          "hide_name": 1,
-          "type": "$or",
-          "parameters": {
-            "A_SIGNED": "00000000000000000000000000000000",
-            "A_WIDTH": "00000000000000000000000000000001",
-            "B_SIGNED": "00000000000000000000000000000000",
-            "B_WIDTH": "00000000000000000000000000000001",
-            "Y_WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:21.14-21.24"
-          },
-          "port_directions": {
-            "A": "input",
-            "B": "input",
-            "Y": "output"
-          },
-          "connections": {
-            "A": [ 20 ],
-            "B": [ 6 ],
-            "Y": [ 7 ]
-          }
-        },
-        "$or$blocking_vs_nonblocking.v:27$6": {
-          "hide_name": 1,
-          "type": "$or",
-          "parameters": {
-            "A_SIGNED": "00000000000000000000000000000000",
-            "A_WIDTH": "00000000000000000000000000000001",
-            "B_SIGNED": "00000000000000000000000000000000",
-            "B_WIDTH": "00000000000000000000000000000001",
-            "Y_WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:27.15-27.25"
-          },
-          "port_directions": {
-            "A": "input",
-            "B": "input",
-            "Y": "output"
-          },
-          "connections": {
-            "A": [ 21 ],
-            "B": [ 10 ],
-            "Y": [ 11 ]
-          }
-        },
-        "$or$blocking_vs_nonblocking.v:33$9": {
-          "hide_name": 1,
-          "type": "$or",
-          "parameters": {
-            "A_SIGNED": "00000000000000000000000000000000",
-            "A_WIDTH": "00000000000000000000000000000001",
-            "B_SIGNED": "00000000000000000000000000000000",
-            "B_WIDTH": "00000000000000000000000000000001",
-            "Y_WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:33.14-33.24"
-          },
-          "port_directions": {
-            "A": "input",
-            "B": "input",
-            "Y": "output"
-          },
-          "connections": {
-            "A": [ 22 ],
-            "B": [ 14 ],
-            "Y": [ 24 ]
-          }
-        },
-        "$or$blocking_vs_nonblocking.v:39$12": {
-          "hide_name": 1,
-          "type": "$or",
-          "parameters": {
-            "A_SIGNED": "00000000000000000000000000000000",
-            "A_WIDTH": "00000000000000000000000000000001",
-            "B_SIGNED": "00000000000000000000000000000000",
-            "B_WIDTH": "00000000000000000000000000000001",
-            "Y_WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:39.15-39.25"
-          },
-          "port_directions": {
-            "A": "input",
-            "B": "input",
-            "Y": "output"
-          },
-          "connections": {
-            "A": [ 25 ],
-            "B": [ 18 ],
-            "Y": [ 26 ]
-          }
-        },
-        "$procdff$13": {
-          "hide_name": 1,
-          "type": "$dff",
-          "parameters": {
-            "CLK_POLARITY": "1",
-            "WIDTH": "00000000000000000000000000000001"
-          },
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:36.5-40.8"
-          },
-          "port_directions": {
-            "CLK": "input",
-            "D": "input",
-            "Q": "output"
-          },
-          "connections": {
-            "CLK": [ 2 ],
-            "D": [ 26 ],
-            "Q": [ 19 ]
-          }
-        },
         "$procdff$14": {
           "hide_name": 1,
           "type": "$dff",
           "parameters": {
-            "CLK_POLARITY": "1",
-            "WIDTH": "00000000000000000000000000000001"
+            "CLK_POLARITY": 1,
+            "WIDTH": 4
           },
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:36.5-40.8"
+            "src": "blocking_vs_nonblocking_forloop.v:28"
           },
           "port_directions": {
             "CLK": "input",
@@ -279,19 +50,19 @@
           },
           "connections": {
             "CLK": [ 2 ],
-            "D": [ 23 ],
-            "Q": [ 25 ]
+            "D": [ 4, 15, 16, 17 ],
+            "Q": [ 15, 16, 17, 18 ]
           }
         },
         "$procdff$15": {
           "hide_name": 1,
           "type": "$dff",
           "parameters": {
-            "CLK_POLARITY": "1",
-            "WIDTH": "00000000000000000000000000000001"
+            "CLK_POLARITY": 1,
+            "WIDTH": 4
           },
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:30.5-34.8"
+            "src": "blocking_vs_nonblocking_forloop.v:28"
           },
           "port_directions": {
             "CLK": "input",
@@ -300,129 +71,115 @@
           },
           "connections": {
             "CLK": [ 2 ],
-            "D": [ 24 ],
-            "Q": [ 15 ]
+            "D": [ 15, 16, 17, 18 ],
+            "Q": [ 11, 12, 13, 14 ]
+          }
+        },
+        "$procdff$17": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": 1,
+            "WIDTH": 4
+          },
+          "attributes": {
+            "src": "blocking_vs_nonblocking_forloop.v:20"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 4, 7, 8, 9 ],
+            "Q": [ 7, 8, 9, 10 ]
+          }
+        },
+        "$procdff$20": {
+          "hide_name": 1,
+          "type": "$dff",
+          "parameters": {
+            "CLK_POLARITY": 1,
+            "WIDTH": 2
+          },
+          "attributes": {
+            "src": "blocking_vs_nonblocking_forloop.v:12"
+          },
+          "port_directions": {
+            "CLK": "input",
+            "D": "input",
+            "Q": "output"
+          },
+          "connections": {
+            "CLK": [ 2 ],
+            "D": [ 4, 5 ],
+            "Q": [ 5, 6 ]
           }
         }
       },
       "netnames": {
-        "$0\\m3[0:0]": {
-          "hide_name": 1,
-          "bits": [ 22 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:30.5-34.8"
-          }
-        },
-        "$0\\m4[0:0]": {
-          "hide_name": 1,
-          "bits": [ 23 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:36.5-40.8"
-          }
-        },
-        "$0\\y3[0:0]": {
-          "hide_name": 1,
-          "bits": [ 24 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:30.5-34.8"
-          }
-        },
-        "$0\\y4[0:0]": {
-          "hide_name": 1,
-          "bits": [ 26 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:36.5-40.8"
-          }
-        },
-        "a1": {
-          "hide_name": 0,
-          "bits": [ 4, 5, 6 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:6.22-6.24"
-          }
-        },
-        "a2": {
-          "hide_name": 0,
-          "bits": [ 8, 9, 10 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:8.22-8.24"
-          }
-        },
-        "a3": {
-          "hide_name": 0,
-          "bits": [ 12, 13, 14 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:10.22-10.24"
-          }
-        },
-        "a4": {
-          "hide_name": 0,
-          "bits": [ 16, 17, 18 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:12.22-12.24"
-          }
-        },
         "clk": {
           "hide_name": 0,
           "bits": [ 2 ],
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:4.16-4.19"
+            "src": "blocking_vs_nonblocking_forloop.v:3"
           }
         },
-        "m1": {
+        "data": {
           "hide_name": 0,
-          "bits": [ 20 ],
+          "bits": [ 4 ],
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:15.9-15.11"
+            "src": "blocking_vs_nonblocking_forloop.v:5"
           }
         },
-        "m2": {
+        "pipeA1": {
           "hide_name": 0,
-          "bits": [ 21 ],
+          "bits": [ 5, 6, 6, 6 ],
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:15.13-15.15"
+            "src": "blocking_vs_nonblocking_forloop.v:9"
           }
         },
-        "m4": {
+        "pipeA2": {
           "hide_name": 0,
-          "bits": [ 25 ],
+          "bits": [ 7, 8, 9, 10 ],
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:15.21-15.23"
+            "src": "blocking_vs_nonblocking_forloop.v:9"
+          }
+        },
+        "pipeB": {
+          "hide_name": 0,
+          "bits": [ 15, 16, 17, 18 ],
+          "attributes": {
+            "src": "blocking_vs_nonblocking_forloop.v:9"
           }
         },
         "rst_n": {
           "hide_name": 0,
           "bits": [ 3 ],
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:5.16-5.21"
+            "src": "blocking_vs_nonblocking_forloop.v:4"
           }
         },
-        "y1": {
+        "yA_down": {
           "hide_name": 0,
-          "bits": [ 7 ],
+          "bits": [ 7, 8, 9, 10 ],
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:7.16-7.18"
+            "src": "blocking_vs_nonblocking_forloop.v:6"
           }
         },
-        "y2": {
+        "yA_up": {
           "hide_name": 0,
-          "bits": [ 11 ],
+          "bits": [ 5, 6, 6, 6 ],
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:9.16-9.18"
+            "src": "blocking_vs_nonblocking_forloop.v:6"
           }
         },
-        "y3": {
+        "yB": {
           "hide_name": 0,
-          "bits": [ 15 ],
+          "bits": [ 11, 12, 13, 14 ],
           "attributes": {
-            "src": "blocking_vs_nonblocking.v:11.16-11.18"
-          }
-        },
-        "y4": {
-          "hide_name": 0,
-          "bits": [ 19 ],
-          "attributes": {
-            "src": "blocking_vs_nonblocking.v:13.16-13.18"
+            "src": "blocking_vs_nonblocking_forloop.v:7"
           }
         }
       }

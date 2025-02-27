@@ -25,8 +25,9 @@ module rotary_enc #(
     localparam  ENC_ST2 = 2'b11;
     localparam  ENC_ST3 = 2'b10;
 
+    // cstate - current state; pstate - previous state
     logic [ENC_STATE_WIDTH-1:0] enc_cstate, enc_pstate;
-    logic [CORDW-1:0] enc_p; // vertical position of paddle 1 from encoder
+    logic [CORDW-1:0] enc_position; // vertical position of paddle 1 from encoder
     localparam ENC_P_SP = 4;    // speed
     localparam ENC_P_H = 40;    // height in pixels
 
@@ -40,16 +41,17 @@ module rotary_enc #(
             enc_pstate <= ENC_ST0;
             enc_a_q <= 0;
             enc_b_q <= 0;
+            enc_position <= ENC_P_SP;
         end else begin
             enc_a_q <= enc_a;
             enc_b_q <= enc_b;
             enc_pstate <= enc_cstate;
-            if (move_up_enc) begin
-                if (enc_p > ENC_P_SP) enc_p <= enc_p - ENC_P_SP;
-            end
             if (move_dn_enc) begin
+                if (enc_position > ENC_P_SP) enc_position <= enc_position - ENC_P_SP;
+            end
+            if (move_up_enc) begin
 /* verilator lint_off WIDTH */
-                if (enc_p < V_RES - (ENC_P_H + ENC_P_SP)) enc_p <= enc_p + ENC_P_SP;
+                if (enc_position < V_RES - (ENC_P_H + ENC_P_SP)) enc_position <= enc_position + ENC_P_SP;
 /* verilator lint_on WIDTH */
             end
         end
@@ -60,25 +62,25 @@ module rotary_enc #(
         move_dn_enc = 1'b0;
         case(enc_cstate)
             ENC_ST0: begin
-                if (enc_pstate == ENC_ST3) begin move_dn_enc = 1'b1; end
-                if (enc_pstate == ENC_ST1) begin move_up_enc = 1'b1; end
+                if (enc_pstate == ENC_ST3) begin move_up_enc = 1'b1; end
+                if (enc_pstate == ENC_ST1) begin move_dn_enc = 1'b1; end
             end
             ENC_ST1: begin
-                if (enc_pstate == ENC_ST0) begin move_dn_enc = 1'b1; end
-                if (enc_pstate == ENC_ST2) begin move_up_enc = 1'b1; end
+                if (enc_pstate == ENC_ST0) begin move_up_enc = 1'b1; end
+                if (enc_pstate == ENC_ST2) begin move_dn_enc = 1'b1; end
             end
             ENC_ST2: begin
-                if (enc_pstate == ENC_ST1) begin move_dn_enc = 1'b1; end
-                if (enc_pstate == ENC_ST3) begin move_up_enc = 1'b1; end
+                if (enc_pstate == ENC_ST1) begin move_up_enc = 1'b1; end
+                if (enc_pstate == ENC_ST3) begin move_dn_enc = 1'b1; end
             end
             ENC_ST3: begin
-                if (enc_pstate == ENC_ST2) begin move_dn_enc = 1'b1; end
-                if (enc_pstate == ENC_ST0) begin move_up_enc = 1'b1; end
+                if (enc_pstate == ENC_ST2) begin move_up_enc = 1'b1; end
+                if (enc_pstate == ENC_ST0) begin move_dn_enc = 1'b1; end
             end
             // missing default -> error handler case
         endcase
     end
 
-    assign o_enc_cnt = enc_p;
+    assign o_enc_cnt = enc_position;
 
 endmodule

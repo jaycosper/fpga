@@ -8,7 +8,7 @@ int main(int argc, char **argv) {
 
     // Create an instance of our module under test
     Vexample *tb = new Vexample;
-    tb->opentrace("trace.vcd");
+    //tb->opentrace("trace.vcd");
 
     // Tick the clock until we are done
     while(!Verilated::gotFinish()) {

@@ -1,0 +1,15 @@
+# Read the Verilog design
+read_verilog -sv moore.sv
+
+# Elaborate the design hierarchy
+hierarchy -check
+
+# Perform high-level synthesis
+proc
+#opt
+fsm
+#opt
+#memory
+#opt
+
+show
