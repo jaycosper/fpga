@@ -1,6 +1,6 @@
 # Verilator makefile
 
-PROJECT = rotary_enc
+PROJECT = mealy
 #TOP = test_our
 SRC = ../$(PROJECT).sv
 TEST_SRC= sim_$(PROJECT).cpp
@@ -13,14 +13,17 @@ WAVEFILE = $(PROJECT)_trace.vcd
 CC = verilator
 FLAGS = -Wall -cc --trace -Mdir $(OUTPUT_DIR)
 
-PARAMS = -GV_RES=480 -GCORDW=10
+PARAMS = #-GDATA_WIDTH=4
 
-.PHONY: all clean lint sim test wave
+.PHONY: all clean lint module sim test wave
 
 all: test
 
 lint:
 	$(CC) $(FLAGS) $(PARAMS) --lint-only $(SRC)
+
+module:
+	$(CC) $(FLAGS) $(PARAMS) $(SRC)
 
 sim:
 	$(CC) $(FLAGS) $(PARAMS) -exe $(TEST_SRC) $(SRC)
