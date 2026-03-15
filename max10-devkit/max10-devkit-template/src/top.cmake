@@ -17,7 +17,6 @@ set(MODULE_LINT_EXCEPTIONS )
 set(MODULE_FORMAT_OPTIONS )
 # ###############################
 
-include(${PROJECT_TOP_DIR}/scripts/generic-module.cmake)
 create_module_targets(
     MODULE_NAME ${MODULE_NAME}
     MODULE_DIR ${CMAKE_CURRENT_LIST_DIR}

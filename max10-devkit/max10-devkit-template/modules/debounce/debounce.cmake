@@ -21,7 +21,6 @@ set(MODULE_SIM_OPTIONS )
 set(MODULE_SIM_TESTCASES )
 # ###############################
 
-#include(${PROJECT_COMMON_DIR}/scripts/generic-module.cmake)
 create_module_targets(
     MODULE_NAME ${MODULE_NAME}
     MODULE_DIR ${CMAKE_CURRENT_LIST_DIR}
