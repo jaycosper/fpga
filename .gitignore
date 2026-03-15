@@ -10,3 +10,5 @@ _build/
 *.nplog
 *.rpt
 *.yslog
+# Generated version package
+auto_version_pkg.sv
