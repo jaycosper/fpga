@@ -1,11 +1,11 @@
 `default_nettype none
 
 module module_template (
-    input   logic in,
-    output  logic out
+    input   logic i_in,
+    output  logic o_out
     );
 
-    assign out = in;
+    assign o_out = i_in;
 
 endmodule
 

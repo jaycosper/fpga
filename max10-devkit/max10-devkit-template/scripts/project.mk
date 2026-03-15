@@ -49,17 +49,18 @@ sim-test : init-project
 	@echo "+------------------------------------------------+"
 
 .PHONY : project-helpfull
-precheck-helpfull : init-project
-	@echo "+------------ Full Precheck Help ----------------+"
+project-helpfull : init-project
+	@echo "+------------ Full Project Help ----------------+"
+	@echo "	The following targets are only available from within the CMake build directory (../_build):"
 	@cd _build && make help
 	@echo "+------------------------------------------------+"
 
 .PHONY : project-help
 project-help :
-	@echo "Precheck Makefile Help"
+	@echo "Project Makefile Help"
 	@echo "	The following targets are only available from within the CMake build directory (../_build):"
 	@echo ""
-	@echo "Available PRECHECK targets:"
+	@echo "Available Project targets:"
 	@echo "	make init-project       - creates and configures CMake targets for the project"
 	@echo "	make precheck           - run all precheck tasks (version, format, lint)"
 	@echo "	make version            - generate version package"

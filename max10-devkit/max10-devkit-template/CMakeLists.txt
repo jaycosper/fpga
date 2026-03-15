@@ -16,11 +16,12 @@ set(PROJECT_DIR ${PROJECT_TOP_DIR}/prj)
 set(SCRIPTS_DIR ${PROJECT_TOP_DIR}/scripts)
 
 # Include Lint and Format handlers
-include(${CMAKE_CURRENT_LIST_DIR}/scripts/version.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/scripts/svlint.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/scripts/lint.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/scripts/format.cmake)
-include(${CMAKE_CURRENT_LIST_DIR}/scripts/sim.cmake)
+include(${SCRIPTS_DIR}/generic-module.cmake)
+include(${SCRIPTS_DIR}/version.cmake)
+include(${SCRIPTS_DIR}/svlint.cmake)
+include(${SCRIPTS_DIR}/lint.cmake)
+include(${SCRIPTS_DIR}/format.cmake)
+include(${SCRIPTS_DIR}/sim.cmake)
 
 # Add a main target that depends on all module targets
 add_custom_target(svlint)
@@ -31,6 +32,7 @@ add_custom_target(clean-sim)
 
 # Initialize the global MODULES list
 set(GLOBAL_MODULES "" CACHE INTERNAL "global project list of modules")
+set(GLOBAL_SOURCES "" CACHE INTERNAL "global project list of sources")
 
 # Point to your custom modules (in this case, FindQuartus.cmake)
 list(APPEND CMAKE_MODULE_PATH ${SCRIPTS_DIR})
@@ -47,3 +49,11 @@ foreach(MODULE ${GLOBAL_MODULES})
     add_dependencies(sim sim-${MODULE})
     add_dependencies(clean-sim clean-sim-${MODULE})
 endforeach()
+
+foreach(SRC ${GLOBAL_SOURCES})
+    message("Global Source file: ${SRC}")
+endforeach()
+list(SORT GLOBAL_SOURCES)
+string(REPLACE ";" "\n" file_content "${GLOBAL_SOURCES}")
+file(WRITE "${CMAKE_BINARY_DIR}/${PROJECT_NAME}-generated.f" "${file_content}\n")
+message(STATUS "Generated file list: ${CMAKE_BINARY_DIR}/${PROJECT_NAME}-generated.f")

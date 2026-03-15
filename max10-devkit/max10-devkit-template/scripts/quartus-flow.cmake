@@ -27,7 +27,7 @@ function(add_quartus_custom_flow)
         COMMAND ${QUARTUS_SH_EXECUTABLE}
                 -t ${ARG_TCL_SCRIPT}
                 --project ${PROJ}
-                --files ${PROJECT_TOP_DIR}/prj/${PROJ}.f
+                --files ${BUILD_DIR}/${PROJ}-generated.f
                 # these are handled in TCL
                 # -family "${ARG_FAMILY}"
                 # -device "${ARG_DEVICE}"
