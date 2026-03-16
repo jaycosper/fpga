@@ -4,8 +4,8 @@ function(create_module_targets)
 
     # Define the arguments
     set(options)
-    set(oneValueArgs MODULE_NAME MODULE_DIR)
-    set(multiValueArgs SOURCES TESTCASES)
+    set(oneValueArgs MODULE_NAME MODULE_DIR TESTBENCH)
+    set(multiValueArgs SOURCES)
 
     cmake_parse_arguments(ARG "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
@@ -32,15 +32,18 @@ function(create_module_targets)
     endif()
 
     # Handle optional testcases
-    if(ARG_TESTCASES)
-        set(fMODULE_SIM_TESTCASES ${ARG_TESTCASES})
-        message(STATUS "Creating targets for module '${fMODULE_NAME}' with testcases: ${fMODULE_SIM_TESTCASES}")
+    if(ARG_TESTBENCH)
+        set(fMODULE_SIM_TESTBENCH ${ARG_TESTBENCH})
+        get_filename_component(TB_NAME ${fMODULE_SIM_TESTBENCH} NAME_WE)
+        set(SIM_ARTIFACTS_DIR "${TB_NAME}_sim_objs")
+        message(STATUS "Creating targets for module '${fMODULE_NAME}' with testbench: ${fMODULE_SIM_TESTBENCH}")
     else()
-        set(fMODULE_SIM_TESTCASES "")
-        message(STATUS "Creating targets for module '${fMODULE_NAME}' with no testcases")
+        set(fMODULE_SIM_TESTBENCH "")
+        message(STATUS "No testbench defined for module '${fMODULE_NAME}'; Creating dummy targets")
     endif()
 
-    # Usage: create_module_targets(MODULE_NAME "test" MODULE_DIR "/path/to/module" TESTCASES "basic" "advanced")
+    # Define simulation artifacts directory
+    set(SIM_ARTIFACTS_PATH ${CMAKE_BINARY_DIR}/${SIM_ARTIFACTS_DIR})
 
     # Add the module name to the global MODULES list
     list(APPEND GLOBAL_MODULES ${fMODULE_NAME})
@@ -50,7 +53,7 @@ function(create_module_targets)
 
     list(APPEND MODULE_LINT_OPTIONS ${GLOBAL_LINT_OPTIONS})
     list(APPEND MODULE_SVLINT_OPTIONS ${GLOBAL_SVLINT_OPTIONS})
-    list(APPEND MODULE_SIM_OPTIONS ${GLOBAL_SIM_OPTIONS} -do)
+    list(APPEND MODULE_SIM_OPTIONS ${GLOBAL_SIM_OPTIONS} --Mdir ${SIM_ARTIFACTS_DIR})
     list(APPEND MODULE_AUTO_SIM_OPTIONS ${GLOBAL_SIM_OPTIONS} -c -do)
 
     # Add a custom target for SV linting the library's sources
@@ -80,54 +83,37 @@ function(create_module_targets)
         VERBATIM
     )
 
-    # Define simulation artifacts directory
-    set(SIM_ARTIFACTS_DIR ${fMODULE_DIR}/sim/run/_sim-gen-files)
-
-    # Add custom targets for simulation - one for each testcase
-    foreach(TESTCASE ${fMODULE_SIM_TESTCASES})
+    if (fMODULE_SIM_TESTBENCH)
+        # Add a target to run all testcases
         add_custom_target(
-            sim-${fMODULE_NAME}-${TESTCASE}
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${SIM_ARTIFACTS_DIR}
-            COMMAND ${CMAKE_COMMAND} -E chdir ${SIM_ARTIFACTS_DIR} ${VERILOG_SIMULATOR} ${MODULE_SIM_OPTIONS} "do ../${fMODULE_NAME}.do ${TESTCASE}"
-            WORKING_DIRECTORY ${fMODULE_DIR}/sim/run
-            COMMENT "Running simulation on ${fMODULE_NAME} testcase: ${TESTCASE}"
+            sim-${fMODULE_NAME}
+            COMMAND ${VERILOG_SIMULATOR} ${fSOURCES} ${fMODULE_SIM_TESTBENCH} ${MODULE_SIM_OPTIONS}
+            COMMAND ${SIM_ARTIFACTS_PATH}/V${fMODULE_NAME}
+            COMMENT "Running all simulation testcases for ${fMODULE_NAME}"
+        )
+
+        # Add a target to clean simulation data
+        # Create the custom clean-sim target
+        add_custom_target(
+            clean-sim-${fMODULE_NAME}
+            COMMAND ${CMAKE_COMMAND} -E remove_directory ${SIM_ARTIFACTS_PATH}
+            COMMENT "Cleaning simulation artifacts for ${fMODULE_NAME}"
             VERBATIM
         )
-    endforeach()
 
-    # Add automation custom targets for simulation - one for each testcase
-    foreach(TESTCASE ${fMODULE_SIM_TESTCASES})
-        add_custom_target(
-            sim-${fMODULE_NAME}-${TESTCASE}-auto
-            COMMAND ${CMAKE_COMMAND} -E make_directory ${SIM_ARTIFACTS_DIR}
-            COMMAND ${CMAKE_COMMAND} -E chdir ${SIM_ARTIFACTS_DIR} ${VERILOG_SIMULATOR} ${MODULE_AUTO_SIM_OPTIONS} "do ../${fMODULE_NAME}.do ${TESTCASE}"
-            WORKING_DIRECTORY ${fMODULE_DIR}/sim/run
-            COMMENT "Running automation simulation on ${fMODULE_NAME} testcase: ${TESTCASE}"
-            VERBATIM
+        # Add simulation artifacts directory to CMake's built-in clean target
+        set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
+            ${SIM_ARTIFACTS_PATH}
         )
-    endforeach()
+    else()
+        # No testbench defined, create a placeholder target that just prints a message notifying the user
+        add_custom_target(
+            sim-${fMODULE_NAME}
+            COMMAND ${CMAKE_COMMAND} -E cmake_echo_color --yellow --bold "No simulation testbench was defined for module ${fMODULE_NAME}."
+        )
+        add_custom_target(
+            clean-sim-${fMODULE_NAME}
+        )
+    endif()
 
-    # Add a target to run all testcases
-    add_custom_target(
-        sim-${fMODULE_NAME}
-        COMMENT "Running all simulation testcases for ${fMODULE_NAME}"
-    )
-
-    foreach(TESTCASE ${fMODULE_SIM_TESTCASES})
-        add_dependencies(sim-${fMODULE_NAME} sim-${fMODULE_NAME}-${TESTCASE}-auto)
-    endforeach()
-
-    # Add a target to clean simulation data
-    # Create the custom clean-sim target
-    add_custom_target(
-        clean-sim-${fMODULE_NAME}
-        COMMAND ${CMAKE_COMMAND} -E remove_directory ${SIM_ARTIFACTS_DIR}
-        COMMENT "Cleaning simulation artifacts for ${fMODULE_NAME}"
-        VERBATIM
-    )
-
-    # Add simulation artifacts directory to CMake's built-in clean target
-    set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
-        ${SIM_ARTIFACTS_DIR}
-    )
 endfunction()
