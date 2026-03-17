@@ -24,6 +24,10 @@ program: compile
 
 rebuild: clean compile
 
+sim: init-project version
+	@echo "+------------- Running Simulation ----------------+"
+	@cd ${BUILD_DIR} && make sim
+
 # Display help
 help: project-help
 	@echo ""
@@ -34,6 +38,7 @@ help: project-help
 	@echo "	make compile  - Run all build steps to compile the project"
 	@echo "	make program  - Program the project with the generated .sof file (requires JTAG connection)"
 	@echo "	make rebuild  - Clean and then compile the project"
+	@echo "	make sim      - Run simulation of the project modules (if simulation targets are defined)"
 	@echo "	make clean    - Remove generated build files and directories"
 	@echo "	make help     - Display this help message"
 

@@ -18,12 +18,12 @@ set(MODULE_FORMAT_OPTIONS )
 # # module-specific simulation options
 set(MODULE_SIM_OPTIONS )
 # # module-specific testcase list
-set(MODULE_SIM_TESTCASES )
+set(MODULE_SIM_TESTBENCH )
 # ###############################
 
 create_module_targets(
     MODULE_NAME ${MODULE_NAME}
     MODULE_DIR ${CMAKE_CURRENT_LIST_DIR}
+    TESTBENCH ${MODULE_SIM_TESTBENCH}
     SOURCES ${SOURCES}
-    TESTCASES ${MODULE_SIM_TESTCASES}
 )
