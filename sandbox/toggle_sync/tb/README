@@ -1,0 +1,14 @@
+Testbench using Verilator
+
+Usage:
+make lint
+- run linter
+
+make sim
+- build simulation
+
+make test
+- run test (build sim if needed)
+
+make wave
+- launch GTKWave on generated VCD from "make test"
