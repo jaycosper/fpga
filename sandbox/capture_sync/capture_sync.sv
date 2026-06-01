@@ -1,6 +1,5 @@
 module capture_sync #(
-    parameter SYNC_STAGES = 2,
-    parameter CLK_CYCLES_L2 = 10
+    parameter SYNC_STAGES = 2
 )(
     input logic i_clk,      // clock
     input logic i_clk2,     // clock
@@ -30,12 +29,12 @@ module capture_sync #(
     end
 
     // synchronizer
-    logic [2:0] synchronizer;
+    logic [SYNC_STAGES-1:0] synchronizer;
     always_ff @(posedge i_clk2) begin : synchronizer_registers
         if (i_rst) begin
             synchronizer <= 0;
         end else begin
-            synchronizer <= {synchronizer[1:0],capture};
+            synchronizer <= {synchronizer[SYNC_STAGES-2:0],capture};
         end
     end
 
