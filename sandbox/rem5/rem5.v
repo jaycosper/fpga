@@ -22,12 +22,12 @@ module rem5
     reg [SM_SIZE-1:0] currState;
     reg valid_fedge;
 
-    // Basic approach -- track remainding as processing the incoming stream
+    // Basic approach -- track remainder as processing the incoming stream
     // Each bit needs to be looked at for how it changes the current remainder
     // No need to track actual remainder, but use state to do it.
     // Equation: (current remainder << 1) + (new bit 0/1) = new remainder
     // ex. if current remainder is 2, a new bit is 1:
-    //      b01 << 1 + 1 = b10 + 1 = b11 = 3
+    //      b10 << 1 + 1 = b100 + 1 = b101 = 0
     // Rem      "0"     "1"     Description
     // 0        0       1       0*2 + 0 = 0 % 5 = rem 0, 0*2+1 = 1 % 5 = rem 1
     // 1        2       3       1*2 + 0 = 2 % 5 = rem 2, 1*2+1 = 3 % 5 = rem 3

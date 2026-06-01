@@ -13,7 +13,7 @@ WAVEFILE = $(PROJECT)_trace.vcd
 CC = verilator
 FLAGS = -Wall -cc --trace
 
-PARAMS = -GSYNC_STAGES=3 -GCLK_CYCLES_L2=4
+PARAMS = -GSYNC_STAGES=3
 
 .PHONY: all clean lint sim test wave
 
